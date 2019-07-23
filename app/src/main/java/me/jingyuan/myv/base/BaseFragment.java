@@ -171,7 +171,7 @@ public abstract class BaseFragment extends SupportFragment {
         return BaseFragment.class.getName();
     }
 
-    @Subscriber(tag = MainActivity.Set_Theme_Color)
+    @Subscriber(tag = MainActivity.SET_THEME_COLOR)
     public void setTheme(String arg) {
         final View rootView = getActivity().getWindow().getDecorView();
         rootView.setDrawingCacheEnabled(true);

@@ -16,7 +16,7 @@ import me.jingyuan.myv.utils.StringUtils;
 
 /**
  * Description: 开屏页
- * Creator: degel
+ * @author : degel
  */
 public class WelcomeActivity extends BaseMvpActivity<WelcomePresenter> implements WelcomeContract.View {
 

@@ -34,7 +34,7 @@ import me.jingyuan.myv.widget.theme.ColorTextView;
 
 /**
  * Description: 影片详情
- * Creator: degel
+ * @author : degel
  */
 public class VideoInfoActivity extends SwipeBackActivity<VideoInfoPresenter> implements VideoInfoContract.View {
 

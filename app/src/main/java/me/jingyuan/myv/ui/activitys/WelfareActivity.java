@@ -26,7 +26,7 @@ import me.jingyuan.myv.widget.theme.ColorTextView;
 
 /**
  * Description: 福利墙
- * Creator: degel
+ * @author : degel
  */
 public class WelfareActivity extends SwipeBackActivity<WelfarePresenter> implements WelfareContract.View, SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnLoadMoreListener {
     @BindView(R.id.title_name)
@@ -65,23 +65,12 @@ public class WelfareActivity extends SwipeBackActivity<WelfarePresenter> impleme
     @Override
     protected void initEvent() {
         mRecyclerView.setRefreshListener(this);
-        mAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-            }
+        mAdapter.setOnItemClickListener(position -> {
         });
-        mAdapter.setError(R.layout.view_error_footer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapter.resumeMore();
-            }
-        });
-        mRecyclerView.getErrorView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRecyclerView.showProgress();
-                onRefresh();
-            }
+        mAdapter.setError(R.layout.view_error_footer).setOnClickListener(v -> mAdapter.resumeMore());
+        mRecyclerView.getErrorView().setOnClickListener(view -> {
+            mRecyclerView.showProgress();
+            onRefresh();
         });
     }
 

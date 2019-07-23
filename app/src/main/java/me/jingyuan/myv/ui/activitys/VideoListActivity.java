@@ -30,7 +30,7 @@ import me.jingyuan.myv.widget.theme.ColorTextView;
 
 /**
  * Description: 影片列表
- * Creator: degel
+ * @author : degel
  */
 public class VideoListActivity extends SwipeBackActivity<VideoListPresenter> implements VideoListContract.View, SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnLoadMoreListener {
 
@@ -71,34 +71,20 @@ public class VideoListActivity extends SwipeBackActivity<VideoListPresenter> imp
 
     @Override
     protected void initEvent() {
-        mTitleName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (EventUtil.isFastDoubleClick()) {
-                    mRecyclerView.scrollToPosition(0);
-                }
+        mTitleName.setOnClickListener(v -> {
+            if (EventUtil.isFastDoubleClick()) {
+                mRecyclerView.scrollToPosition(0);
             }
         });
         mRecyclerView.setRefreshListener(this);
-        mAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                videoInfo = BeanUtil.VideoType2VideoInfo(mAdapter.getItem(position), videoInfo);
-                VideoInfoActivity.start(mContext, videoInfo);
-            }
+        mAdapter.setOnItemClickListener(position -> {
+            videoInfo = BeanUtil.VideoType2VideoInfo(mAdapter.getItem(position), videoInfo);
+            VideoInfoActivity.start(mContext, videoInfo);
         });
-        mAdapter.setError(R.layout.view_error_footer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapter.resumeMore();
-            }
-        });
-        mRecyclerView.getErrorView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRecyclerView.showProgress();
-                onRefresh();
-            }
+        mAdapter.setError(R.layout.view_error_footer).setOnClickListener(v -> mAdapter.resumeMore());
+        mRecyclerView.getErrorView().setOnClickListener(view -> {
+            mRecyclerView.showProgress();
+            onRefresh();
         });
     }
 

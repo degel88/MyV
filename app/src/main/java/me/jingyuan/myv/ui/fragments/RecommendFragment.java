@@ -210,7 +210,7 @@ public class RecommendFragment extends BaseMvpFragment<RecommendPresenter> imple
         recyclerView.showError();
     }
 
-    @Subscriber(tag = MainActivity.Banner_Stop)
+    @Subscriber(tag = MainActivity.BANNER_STOP)
     public void stopBanner(boolean stop) {
         if (stop) {
             banner.pause();

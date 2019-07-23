@@ -39,7 +39,7 @@ import me.jingyuan.myv.widget.WordWrapView;
 
 /**
  * Description: 首页搜索
- * Creator: degel
+ * @author : degel
  */
 public class SearchActivity extends SwipeBackActivity<SearchVideoListPresenter> implements SearchVideoListContract.View, SwipeRefreshLayout.OnRefreshListener, RecyclerArrayAdapter.OnLoadMoreListener {
 
@@ -93,25 +93,14 @@ public class SearchActivity extends SwipeBackActivity<SearchVideoListPresenter> 
     @Override
     protected void initEvent() {
         mRecyclerView.setRefreshListener(this);
-        mAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                videoInfo = BeanUtil.VideoType2VideoInfo(mAdapter.getItem(position), videoInfo);
-                VideoInfoActivity.start(mContext, videoInfo);
-            }
+        mAdapter.setOnItemClickListener(position -> {
+            videoInfo = BeanUtil.VideoType2VideoInfo(mAdapter.getItem(position), videoInfo);
+            VideoInfoActivity.start(mContext, videoInfo);
         });
-        mAdapter.setError(R.layout.view_error_footer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapter.resumeMore();
-            }
-        });
-        mRecyclerView.getErrorView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRecyclerView.showProgress();
-                onRefresh();
-            }
+        mAdapter.setError(R.layout.view_error_footer).setOnClickListener(v -> mAdapter.resumeMore());
+        mRecyclerView.getErrorView().setOnClickListener(view -> {
+            mRecyclerView.showProgress();
+            onRefresh();
         });
 
         edtSearch.addTextChangedListener(new TextWatcher() {
@@ -146,12 +135,9 @@ public class SearchActivity extends SwipeBackActivity<SearchVideoListPresenter> 
                 TextView textView = new TextView(mContext);
                 textView.setTextColor(Color.parseColor("#ffffff"));
                 textView.setText(query);
-                textView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        edtSearch.setText(query);
-                        search(query);
-                    }
+                textView.setOnClickListener(view -> {
+                    edtSearch.setText(query);
+                    search(query);
                 });
                 wvSearchHistory.addView(textView);
             }
@@ -185,6 +171,8 @@ public class SearchActivity extends SwipeBackActivity<SearchVideoListPresenter> 
                 break;
             case R.id.ll_reco1:
                 VideoInfoActivity.start(mContext, recommend.get(1));
+                break;
+            default:
                 break;
         }
 

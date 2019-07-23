@@ -1,6 +1,5 @@
 package me.jingyuan.myv.ui.activitys;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -41,12 +40,13 @@ import me.jingyuan.myv.widget.UnScrollViewPager;
 
 /**
  * Description: 主页
- * Creator: degel
+ *
+ * @author : degel
  */
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, ColorChooserDialog.ColorCallback {
 
-    public static final String Set_Theme_Color = "Set_Theme_Color";
-    public final static String Banner_Stop = "Banner_Stop";
+    public static final String SET_THEME_COLOR = "SET_THEME_COLOR";
+    public final static String BANNER_STOP = "BANNER_STOP";
     private Long firstTime = 0L;
     final int WAIT_TIME = 200;
     @BindView(R.id.tv_collect)
@@ -57,8 +57,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     TextView tvFuli;
     @BindView(R.id.tv_share)
     TextView tvShare;
-//    @BindView(R.id.tv_feedback)
-//    TextView tvFeedback;
     @BindView(R.id.tv_setting)
     TextView tvSetting;
     @BindView(R.id.about)
@@ -72,6 +70,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @BindView(R.id.resideLayout)
     ResideLayout mResideLayout;
     ContentPagerAdapter mPagerAdapter;
+    private int BACK_TIME_SEC;
 
     @Override
     protected int getLayout() {
@@ -90,7 +89,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         StringUtils.setIconDrawable(mContext, tvMydown, MaterialDesignIconic.Icon.gmi_download, 16, 10);
         StringUtils.setIconDrawable(mContext, tvFuli, MaterialDesignIconic.Icon.gmi_mood, 16, 10);
         StringUtils.setIconDrawable(mContext, tvShare, MaterialDesignIconic.Icon.gmi_share, 16, 10);
-//        StringUtils.setIconDrawable(mContext, tvFeedback, MaterialDesignIconic.Icon.gmi_android, 16, 10);
         StringUtils.setIconDrawable(mContext, tvSetting, MaterialDesignIconic.Icon.gmi_settings, 16, 10);
         StringUtils.setIconDrawable(mContext, about, MaterialDesignIconic.Icon.gmi_account, 16, 10);
         StringUtils.setIconDrawable(mContext, theme, MaterialDesignIconic.Icon.gmi_palette, 16, 10);
@@ -132,12 +130,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     private void postBannerState(final boolean stop) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                EventBus.getDefault().post(stop, Banner_Stop);
-            }
-        }, WAIT_TIME);
+        new Handler().postDelayed(() -> EventBus.getDefault().post(stop, BANNER_STOP), WAIT_TIME);
     }
 
     @Override
@@ -154,6 +147,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 break;
             case R.id.tab_rb_4:
                 vpContent.setCurrentItem(3, false);
+                break;
+            default:
                 break;
         }
     }
@@ -182,11 +177,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 .show();
     }
 
-    @OnClick({R.id.tv_collect, R.id.tv_mydown, R.id.tv_fuli, R.id.tv_share,  R.id.tv_setting,
+    @OnClick({R.id.tv_collect, R.id.tv_mydown, R.id.tv_fuli, R.id.tv_share, R.id.tv_setting,
             R.id.about, R.id.theme})
-    /**
-     *  R.id.tv_feedback,
-     */
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_collect:
@@ -226,6 +218,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             case R.id.theme:
                 setTheme();
                 break;
+            default:
+                break;
         }
     }
 
@@ -238,7 +232,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     public void onColorSelection(ColorChooserDialog dialog, int selectedColor) {
         ThemeUtil.onColorSelection(this, dialog, selectedColor);
-        EventBus.getDefault().post("", Set_Theme_Color);
+        EventBus.getDefault().post("", SET_THEME_COLOR);
     }
 
     @Override
@@ -247,7 +241,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             mResideLayout.closePane();
         } else {
             long secondTime = System.currentTimeMillis();
-            if (secondTime - firstTime > 1500) {
+            BACK_TIME_SEC = 1500;
+            if (secondTime - firstTime > BACK_TIME_SEC) {
                 EventUtil.showToast(this, "再按一次退出");
                 firstTime = secondTime;
             } else {

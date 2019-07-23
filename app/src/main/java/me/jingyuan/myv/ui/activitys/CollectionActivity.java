@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
-import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.jude.easyrecyclerview.decoration.SpaceDecoration;
 
 import org.simple.eventbus.EventBus;
@@ -69,12 +68,9 @@ public class CollectionActivity extends SwipeBackActivity<CollectionPresenter> i
 
     @Override
     protected void initEvent() {
-        mAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                videoInfo = BeanUtil.VideoType2VideoInfo(mAdapter.getItem(position), videoInfo);
-                VideoInfoActivity.start(mContext, videoInfo);
-            }
+        mAdapter.setOnItemClickListener(position -> {
+            videoInfo = BeanUtil.VideoType2VideoInfo(mAdapter.getItem(position), videoInfo);
+            VideoInfoActivity.start(mContext, videoInfo);
         });
     }
 
@@ -103,6 +99,8 @@ public class CollectionActivity extends SwipeBackActivity<CollectionPresenter> i
             case R.id.rl_collect_clear:
                 mAdapter.clear();
                 mPresenter.delAllDatas();
+                break;
+            default:
                 break;
         }
     }
